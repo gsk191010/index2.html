@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6b1530">
+  <meta name="description" content="Matrimony Profile Management">
+  <title>திருமண தகவல் மையம் | Matrimony Profile Management</title>
+</head>
+<body style="margin:0;padding:16px;background:#efe7e2;">
+<div id="matrimony-app">
+<style>
+#matrimony-app {
+  --wine: #6b1530;
+  --gold: #c4933f;
+  --border: #e2d6d1;
+  font: 16px Arial, "Nirmala UI", sans-serif;
+  color: #30272a;
+  background: #f7f2ee;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+#matrimony-app * {
+  box-sizing: border-box;
+}
+
+#matrimony-app [hidden] {
+  display: none !important;
+}
+
+#matrimony-app header {
+  background: var(--wine);
+  color: white;
+  padding: 26px;
+}
+
+#matrimony-app h1 {
+  font-size: clamp(22px, 5vw, 32px);
+  margin: 0 0 10px;
+}
+
+#matrimony-app header p {
+  color: #e9c982;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+#matrimony-app button,
+#matrimony-app input,
+#matrimony-app select {
+  font: inherit;
+}
+
+#matrimony-app button {
+  border: 0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  background: var(--wine);
+  color: white;
+  cursor: pointer;
+}
+
+#matrimony-app button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+#matrimony-app button:focus-visible,
+#matrimony-app input:focus-visible,
+#matrimony-app select:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+#matrimony-app nav,
+#matrimony-app .actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#matrimony-app nav {
+  padding: 16px;
+}
+
+#matrimony-app nav button {
+  flex: 1;
+  background: #eadfda;
+  color: var(--wine);
+}
+
+#matrimony-app nav button.active {
+  background: var(--wine);
+  color: white;
+}
+
+#matrimony-app main {
+  max-width: 900px;
+  margin: auto;
+  padding: 0 16px 24px;
+}
+
+#matrimony-app .card {
+  background: white;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin: 0 0 18px;
+}
+
+#matrimony-app h2 {
+  font-size: 20px;
+  color: var(--wine);
+  margin: 0 0 22px;
+  line-height: 1.5;
+}
+
+#matrimony-app .field {
+  margin: 0 0 18px;
+}
+
+#matrimony-app .field > label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 9px;
+  line-height: 1.5;
+}
+
+#matrimony-app input:not([type="checkbox"]),
+#matrimony-app select {
+  width: 100%;
+  min-width: 0;
+  padding: 13px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: #30272a;
+}
+
+#matrimony-app select:disabled {
+  background: #eee;
+  color: #777;
+}
+
+#matrimony-app .time {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+#matrimony-app .time label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+#matrimony-app .photo-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+#matrimony-app .photo {
+  width: 280px;
+  max-width: 100%;
+  aspect-ratio: 7 / 9;
+  overflow: hidden;
+  border: 3px solid var(--gold);
+  padding: 0;
+  background: #f9f3ee;
+  color: var(--wine);
+}
+
+#matrimony-app .photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+#matrimony-app .photo span {
+  display: block;
+  line-height: 1.8;
+  padding: 20px;
+}
+
+#matrimony-app .hint {
+  font-size: 13px;
+  color: #75676b;
+  line-height: 1.6;
+}
+
+#matrimony-app .green {
+  background: #247a61;
+}
+
+#matrimony-app .red {
+  background: #b23a48;
+}
+
+#matrimony-app .gold {
+  background: var(--gold);
+  color: #30272a;
+}
+
+#matrimony-app .checks {
+  background: #fbf7f4;
+  padding: 14px;
+  border-radius: 8px;
+}
+
+#matrimony-app .checks label {
+  display: block;
+  margin: 10px 0;
+  line-height: 1.5;
+}
+
+#matrimony-app .checks input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--wine);
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+#matrimony-app .table-scroll {
+  overflow: auto;
+  margin-top: 18px;
+}
+
+#matrimony-app table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 900px;
+}
+
+#matrimony-app th {
+  background: var(--wine);
+  color: white;
+  text-align: left;
+}
+
+#matrimony-app th button {
+  padding: 10px;
+  background: transparent;
+  text-align: left;
+  width: 100%;
+}
+
+#matrimony-app td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+#matrimony-app tr.selected {
+  background: #f5e4bd;
+}
+
+#matrimony-app tbody tr {
+  cursor: pointer;
+}
+
+#matrimony-app footer {
+  background: var(--wine);
+  color: white;
+  padding: 14px 20px;
+}
+
+#matrimony-app .notice {
+  padding: 12px 16px;
+  margin: 0 16px 16px;
+  background: #fff5db;
+  border-radius: 8px;
+  line-height: 1.6;
+  font-size: 13px;
+}
+
+#matrimony-app dialog {
+  width: min(680px, 94vw);
+  max-height: 85vh;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  color: #30272a;
+}
+
+#matrimony-app dialog::backdrop {
+  background: #0007;
+}
+
+#matrimony-app dl {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 12px;
+}
+
+#matrimony-app dt {
+  font-weight: bold;
+}
+
+#matrimony-app dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+#matrimony-app .detail-photo {
+  width: 180px;
+  aspect-ratio: 7 / 9;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 18px;
+}
+
+@media (max-width: 500px) {
+  #matrimony-app .card {
+    padding: 16px;
+  }
+
+  #matrimony-app main {
+    padding: 0 10px 16px;
+  }
+
+  #matrimony-app .time select {
+    padding: 12px 6px;
+  }
+
+  #matrimony-app dl {
+    grid-template-columns: 1fr;
+  }
+
+  #matrimony-app dd {
+    margin-bottom: 10px;
+  }
+}
+</style>
+
+<header>
+  <h1>திருமண தகவல் மையம்</h1>
+  <p>MATRIMONY PROFILE MANAGEMENT · FIND THE RIGHT MATCH</p>
+</header>
+
+<nav aria-label="Profile sections">
+  <button
+    type="button"
+    id="tab-add"
+    class="active"
+    aria-pressed="true"
+  >
+    ➕ Add Profile / புதிய பதிவு
+  </button>
+
+  <button
+    type="button"
+    id="tab-view"
+    aria-pressed="false"
+  >
+    📋 View & Search / பதிவுகள்
+  </button>
+</nav>
+
+<p class="notice">
+  Profiles and photos are saved only in this browser on this device.
+  They are not sent to the website owner or shared with other visitors.
+  Export a backup before clearing browser data.
+</p>
+
+<p id="message" class="notice" role="status" hidden></p>
+
+<main>
+  <section id="add-panel">
+    <form id="profile-form">
+      <section class="card">
+        <h2>Profile Photo</h2>
+
+        <div class="photo-area">
+          <button
+            type="button"
+            class="photo"
+            id="photo-button"
+            aria-label="Upload profile photo"
+          >
+            <span id="photo-placeholder">
+              📷<br>
+              Passport-size photo to be inserted
+            </span>
+
+            <img
+              id="photo-preview"
+              alt="Profile photo"
+              hidden
+            >
+          </button>
+
+          <div>
+            <p><strong>Passport-size photo to be inserted</strong></p>
+
+            <input
+              type="file"
+              id="photo-file"
+              accept="image/*,.heic,.heif"
+              hidden
+            >
+
+            <div class="actions">
+              <button type="button" id="choose-photo">
+                Choose Photo
+              </button>
+
+              <button
+                type="button"
+                id="remove-photo"
+                class="red"
+              >
+                Remove
+              </button>
+            </div>
+
+            <p id="photo-note" class="hint">
+              The photo fills the passport frame with a centre crop.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>👤 Personal Details / தனிநபர் விவரங்கள்</h2>
+
+        <div id="personal-fields"></div>
+
+        <div class="field">
+          <label>Time of Birth / பிறந்த நேரம்</label>
+
+          <div class="time">
+            <div>
+              <label for="birth-hour">Hour</label>
+              <select id="birth-hour"></select>
+            </div>
+
+            <div>
+              <label for="birth-minute">Minute</label>
+              <select id="birth-minute"></select>
+            </div>
+
+            <div>
+              <label for="birth-ampm">AM / PM</label>
+              <select id="birth-ampm">
+                <option>AM</option>
+                <option>PM</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div id="family-fields"></div>
+      </section>
+
+      <section class="card">
+        <h2>💼 Professional Details / கல்வி & வேலை</h2>
+
+        <div id="professional-fields"></div>
+
+        <div class="field">
+          <label>Properties Owned / சொத்துக்கள்</label>
+          <div id="properties" class="checks"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>💑 Partner Expectations / எதிர்பார்ப்புகள்</h2>
+        <div id="expectation-fields"></div>
+      </section>
+
+      <div class="actions">
+        <button
+          type="submit"
+          id="save-profile"
+          class="green"
+        >
+          💾 Save Profile / சேமிக்கவும்
+        </button>
+
+        <button
+          type="button"
+          id="clear-form"
+          class="gold"
+        >
+          🔄 Clear Form / அழிக்கவும்
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <section id="view-panel" hidden>
+    <section class="card">
+      <h2>View & Search / பதிவுகள்</h2>
+
+      <label for="search">Search by Name / ID / Phone</label>
+      <input
+        id="search"
+        placeholder="Enter name, ID or phone"
+      >
+
+      <div class="actions" style="margin-top:14px">
+        <button type="button" id="refresh" class="gold">
+          Refresh
+        </button>
+
+        <button type="button" id="export" class="green">
+          Export CSV
+        </button>
+
+        <button type="button" id="delete" class="red">
+          Delete Selected
+        </button>
+      </div>
+
+      <p class="hint">
+        Select a row to delete it. Use Details to view the full profile.
+        Click a column heading to sort.
+      </p>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr id="headings"></tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+
+      <p id="empty" class="hint" hidden>No profiles found.</p>
+    </section>
+  </section>
+
+  <datalist id="locations"></datalist>
+
+  <dialog id="details">
+    <h2 id="detail-title"></h2>
+
+    <img
+      id="detail-photo"
+      class="detail-photo"
+      alt="Profile photo"
+      hidden
+    >
+
+    <dl id="detail-fields"></dl>
+
+    <button type="button" id="close-details">Close</button>
+  </dialog>
+</main>
+
+<footer id="count">Total Profiles: 0</footer>
+
+<script>
+(() => {
+  "use strict";
+
+  const root = document.getElementById("matrimony-app");
+  const $ = id => root.querySelector("#" + id);
+
+  const DATA = {
+    locations: [
+      "Chennai",
+      "Madurai",
+      "Coimbatore",
+      "Trichy",
+      "Salem",
+      "Tirunelveli",
+      "Vellore",
+      "Erode",
+      "Thanjavur",
+      "Dindigul",
+      "Kanchipuram",
+      "Cuddalore",
+      "Nagapattinam",
+      "Karur",
+      "Namakkal",
+      "Krishnagiri",
+      "Dharmapuri",
+      "Virudhunagar",
+      "Ramanathapuram",
+      "Thoothukudi",
+      "Kanyakumari",
+      "Tenkasi",
+      "Tiruppur",
+      "Nilgiris",
+      "Perambalur",
+      "Ariyalur",
+      "Mayiladuthurai",
+      "Pudukottai",
+      "Sivagangai",
+      "Chengalpattu",
+      "Kallakurichi",
+      "Ranipet",
+      "Theni",
+      "Tirupathur",
+      "Tiruvallur",
+      "Tiruvannamalai",
+      "Tiruvarur",
+      "Viluppuram",
+      "Bangalore (Karnataka)",
+      "Hyderabad (Telangana)",
+      "Mumbai (Maharashtra)",
+      "Delhi",
+      "Kolkata (West Bengal)",
+      "Ahmedabad (Gujarat)",
+      "Jaipur (Rajasthan)",
+      "Lucknow (Uttar Pradesh)",
+      "Patna (Bihar)",
+      "Bhubaneswar (Odisha)",
+      "Thiruvananthapuram (Kerala)",
+      "Guwahati (Assam)",
+      "Chandigarh",
+      "Indore (Madhya Pradesh)",
+      "Nagpur (Maharashtra)",
+      "Pune (Maharashtra)",
+      "Surat (Gujarat)",
+      "Visakhapatnam (Andhra Pradesh)",
+      "Vijayawada (Andhra Pradesh)",
+      "Andhra Pradesh",
+      "Arunachal Pradesh",
+      "Assam",
+      "Bihar",
+      "Chhattisgarh",
+      "Goa",
+      "Gujarat",
+      "Haryana",
+      "Himachal Pradesh",
+      "Jharkhand",
+      "Karnataka",
+      "Kerala",
+      "Madhya Pradesh",
+      "Maharashtra",
+      "Manipur",
+      "Meghalaya",
+      "Mizoram",
+      "Nagaland",
+      "Odisha",
+      "Punjab",
+      "Rajasthan",
+      "Sikkim",
+      "Tamil Nadu",
+      "Telangana",
+      "Tripura",
+      "Uttar Pradesh",
+      "Uttarakhand",
+      "West Bengal",
+      "Andaman and Nicobar Islands",
+      "Dadra and Nagar Haveli and Daman and Diu",
+      "Jammu and Kashmir",
+      "Ladakh",
+      "Lakshadweep",
+      "Puducherry",
+      "Singapore",
+      "Malaysia",
+      "UAE (Dubai/Abu Dhabi)",
+      "Saudi Arabia",
+      "Qatar",
+      "Kuwait",
+      "Bahrain",
+      "Oman",
+      "USA",
+      "Canada",
+      "UK",
+      "Australia",
+      "New Zealand",
+      "Germany",
+      "France",
+      "Switzerland",
+      "South Africa",
+      "Mauritius",
+      "Sri Lanka",
+      "Myanmar",
+      "Thailand",
+      "Indonesia"
+    ],
+
+    religions: [
+      "Hindu",
+      "Muslim",
+      "Christian",
+      "Religion No Bar"
+    ],
+
+    castes: [
+      "Caste No Bar",
+      "Brahmin - Iyer",
+      "Brahmin - Iyengar",
+      "Brahmin - Vadama",
+      "Brahmin - Other",
+      "Mudaliar",
+      "Pillai",
+      "Gounder",
+      "Thevar",
+      "Nadar",
+      "Vanniyar",
+      "Reddy",
+      "Naidu",
+      "Chettiar",
+      "Maravar",
+      "SC (Scheduled Caste)",
+      "ST (Scheduled Tribe)",
+      "OBC (Other Backward Class)",
+      "Other"
+    ],
+
+    job_sectors: [
+      "Private Job / தனியார் வேலை",
+      "Private (LTD) / தனியார் நிறுவனம்",
+      "Public (LTD) / பொது நிறுவனம",
+      "Government Job / அரசு வேலை",
+      "Farmer / விவசாயி",
+      "Business / வியாபாரம்",
+      "Small Scale Sector / சிறு தொழில்",
+      "Large Scale Sector / பெரும் தொழில்",
+      "Others / மற்றவை"
+    ],
+
+    salary_ranges: [
+      "Up to ₹30,000",
+      "₹30,000 - ₹50,000",
+      "₹50,000 - ₹75,000",
+      "₹75,000 - ₹1 Lakh",
+      "₹1 Lakh - ₹2 Lakh",
+      "₹2 Lakh & Above"
+    ],
+
+    properties: [
+      "Own House / சொந்த வீடு",
+      "Monthly Income / மாத வருமானம்",
+      "Rent Income / வாடகை வருமானம்",
+      "None / இல்லை"
+    ],
+
+    age_diffs: [
+      "-3", "-2", "-1", "0", "1", "2", "3",
+      "4", "5", "6", "7", "8", "9", "10"
+    ]
+  };
+
+  const fields = [
+    ["name", "Name / பெயர் *"],
+    ["phone", "Phone Number / தொலைபேசி எண் (10 digits)"],
+    ["dob", "DOB / பிறந்த தேதி"],
+    ["tob", "Time of Birth"],
+    ["pob", "Place of Birth / பிறந்த ஊர்"],
+    ["religion", "Religion / மதம்"],
+    ["caste", "Caste / சாதி"],
+    ["father_name", "Father’s Name / தந்தை பெயர்"],
+    ["mother_name", "Mother’s Name / தாய் பெயர்"],
+    ["qualification", "Qualification / கல்வி தகுதி"],
+    ["job_sector", "Job Sector / வேலைத் துறை"],
+    ["salary_range", "Monthly Income / மாத வருமானம் (₹)"],
+    ["properties_owned", "Properties Owned"],
+    ["bride_location", "Expected Location / எதிர்பார்க்கும் ஊர்"],
+    ["bride_qualification", "Expected Qualification / கல்வி"],
+    ["age_diff", "Age Difference / வயது வித்தியாசம்"],
+    ["bride_income_range", "Expected Income / வருமான எதிர்பார்ப்பு (₹)"]
+  ];
+
+  const labels = Object.fromEntries(fields);
+
+  const headers = [
+    "id",
+    ...fields.map(field => field[0]),
+    "photo_path",
+    "created_at"
+  ];
+
+  let db = null;
+  let profiles = [];
+  let selected = null;
+  let sortKey = "id";
+  let sortDirection = -1;
+  let photoData = "";
+  let photoBusy = false;
+  let photoVersion = 0;
+
+  function message(text) {
+    $("message").textContent = text;
+    $("message").hidden = !text;
+  }
+
+  function options(select, values, placeholder = true) {
+    if (placeholder) {
+      select.add(new Option("Select", ""));
+    }
+
+    values.forEach(value => {
+      select.add(new Option(value, value));
+    });
+  }
+
+  function field(parent, key, type = "text", values = null) {
+    const box = document.createElement("div");
+    box.className = "field";
+
+    const label = document.createElement("label");
+    label.htmlFor = key;
+    label.textContent = labels[key];
+
+    const input = document.createElement(
+      values ? "select" : "input"
+    );
+
+    input.id = key;
+    input.name = key;
+
+    if (values) {
+      options(input, values);
+    } else {
+      input.type = type;
+    }
+
+    if (key === "name") {
+      input.required = true;
+      input.autocomplete = "name";
+    }
+
+    if (key === "phone") {
+      input.maxLength = 10;
+      input.inputMode = "numeric";
+      input.pattern = "[0-9]{10}";
+      input.title = "Enter exactly 10 digits or leave blank";
+
+      input.addEventListener("input", () => {
+        input.value = input.value
+          .replace(/[^0-9]/g, "")
+          .slice(0, 10);
+      });
+    }
+
+    if (["pob", "bride_location"].includes(key)) {
+      input.setAttribute("list", "locations");
+      input.placeholder = "Choose or type a location";
+    }
+
+    box.append(label, input);
+    $(parent).append(box);
+  }
+
+  field("personal-fields", "name");
+  field("personal-fields", "phone", "tel");
+  field("personal-fields", "dob", "date");
+
+  field("family-fields", "pob");
+  field("family-fields", "religion", "text", DATA.religions);
+  field("family-fields", "caste", "text", DATA.castes);
+  field("family-fields", "father_name");
+  field("family-fields", "mother_name");
+
+  const qualifications = [
+    "B.E/B.Tech",
+    "B.Sc",
+    "B.Com",
+    "B.A",
+    "M.E/M.Tech",
+    "M.Sc",
+    "MBA",
+    "MBBS",
+    "Ph.D",
+    "Diploma",
+    "Other"
+  ];
+
+  field(
+    "professional-fields",
+    "qualification",
+    "text",
+    qualifications
+  );
+
+  field(
+    "professional-fields",
+    "job_sector",
+    "text",
+    DATA.job_sectors
+  );
+
+  field(
+    "professional-fields",
+    "salary_range",
+    "text",
+    DATA.salary_ranges
+  );
+
+  field("expectation-fields", "bride_location");
+
+  field(
+    "expectation-fields",
+    "bride_qualification",
+    "text",
+    [
+      "Any",
+      ...qualifications.filter(
+        value => !["Diploma", "Other"].includes(value)
+      )
+    ]
+  );
+
+  field(
+    "expectation-fields",
+    "age_diff",
+    "text",
+    DATA.age_diffs
+  );
+
+  field(
+    "expectation-fields",
+    "bride_income_range",
+    "text",
+    DATA.salary_ranges
+  );
+
+  options(
+    $("birth-hour"),
+    Array.from(
+      { length: 12 },
+      (_, index) => String(index + 1).padStart(2, "0")
+    ),
+    false
+  );
+
+  options(
+    $("birth-minute"),
+    Array.from(
+      { length: 60 },
+      (_, index) => String(index).padStart(2, "0")
+    ),
+    false
+  );
+
+  [...new Set(DATA.locations)].forEach(value => {
+    const option = document.createElement("option");
+    option.value = value;
+    $("locations").append(option);
+  });
+
+  const propertyInputs = [];
+
+  DATA.properties.forEach((value, index) => {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+
+    input.type = "checkbox";
+    input.value = value;
+    input.id = "property-" + index;
+
+    label.append(input, document.createTextNode(value));
+    $("properties").append(label);
+    propertyInputs.push(input);
+
+    input.addEventListener("change", () => {
+      const none = propertyInputs[3];
+      const otherInputs = propertyInputs.slice(0, 3);
+      const hasOther = otherInputs.some(item => item.checked);
+
+      none.disabled = hasOther;
+
+      if (hasOther) {
+        none.checked = false;
+      }
+
+      otherInputs.forEach(item => {
+        item.disabled = none.checked;
+      });
+    });
+  });
+
+  function casteState() {
+    const caste = $("caste");
+    caste.disabled = $("religion").value !== "Hindu";
+
+    if (caste.disabled) {
+      caste.value = "";
+    }
+  }
+
+  $("religion").addEventListener("change", casteState);
+
+  function today() {
+    const date = new Date();
+
+    return (
+      date.getFullYear() + "-" +
+      String(date.getMonth() + 1).padStart(2, "0") + "-" +
+      String(date.getDate()).padStart(2, "0")
+    );
+  }
+
+  function updateSave() {
+    $("save-profile").disabled = !db || photoBusy;
+  }
+
+  function removePhoto() {
+    photoVersion++;
+    photoBusy = false;
+    photoData = "";
+
+    $("photo-preview").hidden = true;
+    $("photo-preview").removeAttribute("src");
+    $("photo-placeholder").hidden = false;
+    $("photo-file").value = "";
+
+    $("photo-note").textContent =
+      "The photo fills the passport frame with a centre crop.";
+
+    updateSave();
+  }
+
+  function clearForm() {
+    $("profile-form").reset();
+    $("name").setCustomValidity("");
+    $("dob").value = today();
+    $("dob").max = today();
+    $("birth-hour").value = "12";
+    $("age_diff").value = "0";
+
+    propertyInputs.forEach(input => {
+      input.disabled = false;
+    });
+
+    casteState();
+    removePhoto();
+  }
+
+  $("clear-form").addEventListener("click", () => {
+    clearForm();
+    $("name").focus();
+  });
+
+  $("remove-photo").addEventListener("click", removePhoto);
+
+  ["photo-button", "choose-photo"].forEach(id => {
+    $(id).addEventListener("click", () => {
+      $("photo-file").click();
+    });
+  });
+
+  $("photo-file").addEventListener("change", event => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const version = ++photoVersion;
+    photoBusy = true;
+    updateSave();
+
+    const url = URL.createObjectURL(file);
+    const image = new Image();
+
+    $("photo-note").textContent = "Preparing photo…";
+
+    image.onload = () => {
+      URL.revokeObjectURL(url);
+
+      if (version !== photoVersion) return;
+
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = 560;
+        canvas.height = 720;
+
+        const context = canvas.getContext("2d");
+
+        const scale = Math.max(
+          560 / image.naturalWidth,
+          720 / image.naturalHeight
+        );
+
+        const width = 560 / scale;
+        const height = 720 / scale;
+
+        context.fillStyle = "white";
+        context.fillRect(0, 0, 560, 720);
+
+        context.drawImage(
+          image,
+          (image.naturalWidth - width) / 2,
+          (image.naturalHeight - height) / 2,
+          width,
+          height,
+          0,
+          0,
+          560,
+          720
+        );
+
+        photoData = canvas.toDataURL("image/jpeg", 0.86);
+
+        $("photo-preview").src = photoData;
+        $("photo-preview").hidden = false;
+        $("photo-placeholder").hidden = true;
+        $("photo-note").textContent = "Photo ready: " + file.name;
+      } catch (error) {
+        $("photo-note").textContent =
+          "Unable to prepare the photo. Try JPG or PNG.";
+      }
+
+      photoBusy = false;
+      updateSave();
+    };
+
+    image.onerror = () => {
+      URL.revokeObjectURL(url);
+
+      if (version !== photoVersion) return;
+
+      photoBusy = false;
+      updateSave();
+      $("photo-file").value = "";
+
+      $("photo-note").textContent =
+        "This browser cannot open the image. " +
+        "Convert HEIC/HEIF to JPG or PNG.";
+    };
+
+    image.src = url;
+  });
+
+  function tab(view) {
+    $("view-panel").hidden = !view;
+    $("add-panel").hidden = view;
+
+    ["tab-add", "tab-view"].forEach((id, index) => {
+      const active = Boolean(index) === view;
+
+      $(id).classList.toggle("active", active);
+      $(id).setAttribute("aria-pressed", String(active));
+    });
+  }
+
+  $("tab-add").addEventListener("click", () => tab(false));
+  $("tab-view").addEventListener("click", () => tab(true));
+
+  function transaction(mode, action) {
+    return new Promise((resolve, reject) => {
+      try {
+        const tx = db.transaction("profiles", mode);
+
+        action(tx.objectStore("profiles"));
+
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+
+        tx.onabort = () => reject(
+          tx.error || new Error("Storage operation cancelled")
+        );
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  async function load() {
+    if (!db) return;
+
+    try {
+      const result = await new Promise((resolve, reject) => {
+        const request = db
+          .transaction("profiles", "readonly")
+          .objectStore("profiles")
+          .getAll();
+
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+
+      profiles = result;
+
+      if (!profiles.some(profile => profile.id === selected)) {
+        selected = null;
+      }
+
+      render();
+
+      $("count").textContent =
+        "Total Profiles: " + profiles.length;
+    } catch (error) {
+      message("Unable to read saved profiles. " + error.message);
+    }
+  }
+
+  $("profile-form").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (!db || photoBusy) return;
+
+    if (!$("name").value.trim()) {
+      $("name").setCustomValidity("Name is required.");
+      $("name").reportValidity();
+      return;
+    }
+
+    const profile = {};
+
+    fields.forEach(([key]) => {
+      if ($(key)) {
+        profile[key] = $(key).value.trim();
+      }
+    });
+
+    profile.dob = profile.dob
+      ? profile.dob.split("-").reverse().join("/")
+      : "";
+
+    profile.tob =
+      $("birth-hour").value + ":" +
+      $("birth-minute").value + " " +
+      $("birth-ampm").value;
+
+    profile.properties_owned = propertyInputs
+      .filter(input => input.checked)
+      .map(input => input.value)
+      .join(", ");
+
+    profile.photo_path = photoData;
+    profile.created_at = new Date().toISOString();
+
+    $("save-profile").disabled = true;
+
+    try {
+      await transaction("readwrite", store => {
+        store.add(profile);
+      });
+
+      clearForm();
+      await load();
+      tab(true);
+
+      message("Profile saved successfully in this browser.");
+    } catch (error) {
+      message(
+        "Profile could not be saved. Your form is retained. " +
+        error.message
+      );
+    } finally {
+      updateSave();
+    }
+  });
+
+  $("name").addEventListener("input", () => {
+    $("name").setCustomValidity("");
+  });
+
+  const columns = [
+    ["id", "ID"],
+    ["name", "Name"],
+    ["phone", "Phone"],
+    ["dob", "DOB"],
+    ["religion", "Religion"],
+    ["qualification", "Qualification"],
+    ["job_sector", "Job"],
+    ["salary_range", "Salary"]
+  ];
+
+  columns.forEach(([key, label]) => {
+    const heading = document.createElement("th");
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.textContent = label;
+
+    button.addEventListener("click", () => {
+      sortDirection = sortKey === key ? -sortDirection : 1;
+      sortKey = key;
+      render();
+    });
+
+    heading.append(button);
+    $("headings").append(heading);
+  });
+
+  const actionHeading = document.createElement("th");
+  actionHeading.textContent = "Details";
+  $("headings").append(actionHeading);
+
+  function render() {
+    const query = $("search").value.trim().toLocaleLowerCase();
+
+    const list = profiles.filter(profile => {
+      return [profile.name, profile.id, profile.phone].some(value => {
+        return String(value ?? "")
+          .toLocaleLowerCase()
+          .includes(query);
+      });
+    });
+
+    list.sort((a, b) => {
+      if (sortKey === "id") {
+        return (a.id - b.id) * sortDirection;
+      }
+
+      if (sortKey === "dob") {
+        const dateValue = value =>
+          (value || "").split("/").reverse().join("-");
+
+        return dateValue(a.dob)
+          .localeCompare(dateValue(b.dob)) * sortDirection;
+      }
+
+      return String(a[sortKey] || "").localeCompare(
+        String(b[sortKey] || ""),
+        undefined,
+        { numeric: true }
+      ) * sortDirection;
+    });
+
+    $("rows").replaceChildren();
+
+    list.forEach(profile => {
+      const row = document.createElement("tr");
+
+      row.classList.toggle(
+        "selected",
+        selected === profile.id
+      );
+
+      columns.forEach(([key]) => {
+        const cell = document.createElement("td");
+        cell.textContent = profile[key] ?? "";
+        row.append(cell);
+      });
+
+      row.addEventListener("click", () => {
+        selected = profile.id;
+        render();
+      });
+
+      row.addEventListener("dblclick", () => {
+        details(profile);
+      });
+
+      const cell = document.createElement("td");
+      const button = document.createElement("button");
+
+      button.type = "button";
+      button.textContent = "Details";
+
+      button.addEventListener("click", event => {
+        event.stopPropagation();
+        details(profile);
+      });
+
+      cell.append(button);
+      row.append(cell);
+      $("rows").append(row);
+    });
+
+    $("empty").hidden = Boolean(list.length);
+  }
+
+  function details(profile) {
+    $("detail-title").textContent =
+      "Profile #" + profile.id + " · " + profile.name;
+
+    $("detail-fields").replaceChildren();
+
+    [
+      ["id", "Profile ID"],
+      ...fields,
+      ["created_at", "Registered On"]
+    ].forEach(([key, label]) => {
+      const term = document.createElement("dt");
+      const description = document.createElement("dd");
+
+      term.textContent = label;
+      description.textContent = profile[key] || "—";
+
+      $("detail-fields").append(term, description);
+    });
+
+    $("detail-photo").hidden = !profile.photo_path;
+
+    if (profile.photo_path) {
+      $("detail-photo").src = profile.photo_path;
+    } else {
+      $("detail-photo").removeAttribute("src");
+    }
+
+    $("details").showModal();
+  }
+
+  $("close-details").addEventListener("click", () => {
+    $("details").close();
+  });
+
+  $("search").addEventListener("input", render);
+  $("refresh").addEventListener("click", load);
+
+  $("delete").addEventListener("click", async () => {
+    if (selected === null) {
+      message("Select a profile first.");
+      return;
+    }
+
+    const id = selected;
+
+    if (!confirm(
+      "Delete profile #" + id + "? This cannot be undone."
+    )) {
+      return;
+    }
+
+    try {
+      await transaction("readwrite", store => {
+        store.delete(id);
+      });
+
+      selected = null;
+      await load();
+      message("Profile deleted.");
+    } catch (error) {
+      message("Unable to delete the profile. " + error.message);
+    }
+  });
+
+  function csvCell(value) {
+    let text = String(value ?? "");
+
+    if (
+      /^[=+@\t\r]/.test(text) ||
+      (
+        /^\s*[-=+@]/.test(text) &&
+        !/^[-+]\d+(\.\d+)?$/.test(text)
+      )
+    ) {
+      text = "'" + text;
+    }
+
+    return '"' + text.replace(/"/g, '""') + '"';
+  }
+
+  $("export").addEventListener("click", () => {
+    if (!profiles.length) {
+      message("No profiles to export.");
+      return;
+    }
+
+    const content = "\uFEFF" + [
+      headers.map(csvCell).join(","),
+      ...profiles.map(profile =>
+        headers.map(header => csvCell(profile[header])).join(",")
+      )
+    ].join("\r\n");
+
+    const blob = new Blob(
+      [content],
+      { type: "text/csv;charset=utf-8" }
+    );
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "matrimony-profiles.csv";
+    link.click();
+
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+    message("CSV exported with all fields and photo data.");
+  });
+
+  clearForm();
+  updateSave();
+
+  try {
+    const request = indexedDB.open("matrimony-web-profiles", 1);
+
+    request.onupgradeneeded = () => {
+      request.result.createObjectStore(
+        "profiles",
+        {
+          keyPath: "id",
+          autoIncrement: true
+        }
+      );
+    };
+
+    request.onsuccess = () => {
+      db = request.result;
+
+      db.onversionchange = () => {
+        db.close();
+        db = null;
+        updateSave();
+
+        message(
+          "Storage changed in another tab. Reload this page."
+        );
+      };
+
+      updateSave();
+      load();
+    };
+
+    request.onerror = () => {
+      message(
+        "Browser storage is unavailable. Allow site storage " +
+        "or open the form in a normal browser tab."
+      );
+    };
+
+    request.onblocked = () => {
+      message(
+        "Close other tabs using this form, then reload."
+      );
+    };
+  } catch (error) {
+    message(
+      "Browser storage is blocked here. The form still works, " +
+      "but profiles cannot be saved. " +
+      "Open it in a normal browser tab."
+    );
+  }
+})();
+</script>
+</div>
+</body>
+</html>
+ 
